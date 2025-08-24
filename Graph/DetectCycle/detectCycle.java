@@ -14,25 +14,25 @@ class Graph{
         }
         graph[0].add(new Edge(0,2));
 
-        // graph[1].add(new Edge(1,2));
-        // graph[1].add(new Edge(1,3));
-        // graph[1].add(new Edge(1,4));
-        // graph[1].add(new Edge(1,5));
+        graph[1].add(new Edge(1,2));
+        graph[1].add(new Edge(1,3));
+        graph[1].add(new Edge(1,4));
+        graph[1].add(new Edge(1,5));
 
-        // graph[2].add(new Edge(2,0));
+        graph[2].add(new Edge(2,0));
         graph[2].add(new Edge(2,3));
-        // graph[2].add(new Edge(2,1));
+        graph[2].add(new Edge(2,1));
 
-        // graph[3].add(new Edge(3,1));
-        // graph[3].add(new Edge(3,2));
+        graph[3].add(new Edge(3,1));
+        graph[3].add(new Edge(3,2));
         graph[3].add(new Edge(3,4));
         
-        // graph[4].add(new Edge(4,1));
-        // graph[4].add(new Edge(4,3));
-        // graph[4].add(new Edge(4,5));
+        graph[4].add(new Edge(4,1));
+        graph[4].add(new Edge(4,3));
+        graph[4].add(new Edge(4,5));
 
-        // graph[5].add(new Edge(5,1));
-        // graph[5].add(new Edge(5,4));
+        graph[5].add(new Edge(5,1));
+        graph[5].add(new Edge(5,4));
 
         /**
          *   0     3----4
@@ -52,7 +52,7 @@ class Graph{
             Edge e=graph[curr].get(i);
             if(rec[e.dest]==true){
                 return true;
-            }else if(visit[e.dest]==false){
+            }else if(!visit[e.dest]){
                 if(detectCycle(graph,visit,e.dest,rec)){
                     return true;
                 }
@@ -62,7 +62,22 @@ class Graph{
         return false;
 
    }
-    
+//    second method for decting cycle
+    public static boolean iscylce(ArrayList<Edge> graph[],boolean visit[],int curr,int parent)    {
+        visit[curr]=true;
+        for(int i=0;i<graph[curr].size();i++){
+            Edge e=graph[curr].get(i);
+            if(visit[e.dest]&&parent!=e.dest){
+                return true;
+            }
+            else if(!visit[e.dest]){
+                if(iscylce(graph,visit,e.dest,curr)){
+                return true;
+            }
+            }
+        }
+        return false;
+    }
 
     public static void main(String[] arg){
         int v=6;
@@ -72,9 +87,11 @@ class Graph{
 
         createAdjacencyList(graph);
 
-        boolean visit[]=new boolean[v+1];
+        boolean visit[]=new boolean[v];
        boolean ans= detectCycle(graph,new boolean[v],0,new boolean[v]);
        System.out.println(ans);
-        
+
+        boolean ans1=iscylce(graph,visit,0,-1);
+         System.out.println(ans1);
     }
 }
